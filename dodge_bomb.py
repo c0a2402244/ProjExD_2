@@ -2,6 +2,7 @@ import os
 import random
 import sys
 import pygame as pg
+import time
 
 
 WIDTH, HEIGHT = 1100, 650
@@ -26,6 +27,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     if rct.top < 0 or HEIGHT < rct.bottom:
         tate = False
     return yoko, tate
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -40,19 +42,40 @@ def main():
     bb_img.set_colorkey((0, 0, 0))
     vx, vy = +5, +5
 
+    ko_img = pg.image.load("fig/8.png")
+    bk_img = pg.Surface((1100, 650))
+    bk_img.set_alpha(170)
+    fonto = pg.font.Font(None,80)
+    txt = fonto.render("Game Over", True, (255, 255, 255))
+
     clock = pg.time.Clock()
     tmr = 0
+
+    def gameover(screen: pg.Surface) -> None: 
+        screen.blit(bk_img, [0, 0])
+        screen.blit(txt, [400,250])
+        screen.blit(ko_img,[350,240])
+        screen.blit(ko_img,[780,160])
+        pg.display.update()
+        time.sleep(5)
+        return
+    
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
         screen.blit(bg_img, [0, 0]) 
+
         if kk_rct.colliderect(bb_rct):
+            gameover(screen)
             print("Game Over")
             return
 
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
+
         for key, mv in DELTA.items():
             if key_lst[key]:
                 sum_mv[0] += mv[0]
