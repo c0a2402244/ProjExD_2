@@ -55,11 +55,9 @@ def main():
         screen.blit(bk_img, [0, 0])
         screen.blit(txt, [400,250])
         screen.blit(ko_img,[350,240])
-        screen.blit(ko_img,[780,160])
+        screen.blit(ko_img,[710,240])
         pg.display.update()
         time.sleep(5)
-        return
-    
 
     while True:
         for event in pg.event.get():
